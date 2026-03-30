@@ -59,31 +59,15 @@ Prompts:
 
 ---
 
-## 6. Limitations and Bias 
+## 6. Limitations and Bias
 
-Where the system struggles or behaves unfairly. 
-
-Prompts:  
-
-- Features it does not consider  
-- Genres or moods that are underrepresented  
-- Cases where the system overfits to one preference  
-- Ways the scoring might unintentionally favor some users  
+The genre weight (+2.0) is so dominant that a song matching only on genre will almost always outrank a song that matches on mood, energy, and acousticness combined. This creates a filter bubble: a user who enjoys "happy pop" will consistently receive "intense pop" (Gym Hero) as a top result simply because it shares the genre label, even though the mood is the opposite of what they asked for. The catalog is also severely unbalanced. Lofi has 3 songs while genres like classical, metal, and reggae each have only one, meaning users of niche genres quickly exhaust their genre matches and receive unrelated results for slots 2 through 5. The scoring treats every user as having a single fixed taste point, so someone with genuinely mixed preferences (such as high energy but a sad mood) gets penalized, the system has no way to honor conflicting signals and will quietly ignore the weaker one. Finally, because the ranking rule simply picks the K closest matches with no diversity enforcement, similar songs cluster at the top: a chill lofi listener receives Library Rain and Midnight Coding as their top two picks even though those songs are nearly identical, but offering no real variety.
 
 ---
 
-## 7. Evaluation  
+## 7. Evaluation
 
-How you checked whether the recommender behaved as expected. 
-
-Prompts:  
-
-- Which user profiles you tested  
-- What you looked for in the recommendations  
-- What surprised you  
-- Any simple tests or comparisons you ran  
-
-No need for numeric metrics unless you created some.
+Five user profiles were tested against the full 18-song catalog: High-Energy Pop, Chill Lofi, Deep Intense Rock, a Conflicted Listener (high energy but sad mood), and a Niche Classical Fan. For each profile the top 5 results were reviewed to check whether they felt musically reasonable. The clearest successes were profiles with a strong genre presence in the catalog, Storm Runner was an almost perfect match for the rock fan, and Sunday Sermon was the obvious top pick for the classical fan. The most surprising result came from the High-Energy Pop profile: "Gym Hero" (pop, intense) consistently ranked second even though the user explicitly preferred a happy mood, but it kept appearing because the genre match alone was worth more points than any combination of mood and numeric features. A weight-shift experiment was also run where the genre bonus was halved (2.0 → 1.0) and the energy weight was doubled (1.0 → 2.0). The top-ranked song stayed the same for most profiles, but the gap between the #1 and #2 results narrowed significantly, and the Conflicted Listener's rankings reshuffled, showing that the genre weight is the single biggest factor controlling which song wins, not sonic similarity. This confirmed that the system is currently more of a genre sorter than a true taste matcher.
 
 ---
 
